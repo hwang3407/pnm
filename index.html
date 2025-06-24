@@ -1,0 +1,663 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Print&Make</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #2c3e50;
+            --secondary-color: #e74c3c;
+            --text-color: #333;
+            --light-bg: #f9f9f9;
+            --white: #fff;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+            color: var(--text-color);
+            line-height: 1.6;
+            background-color: var(--light-bg);
+            background-image: 
+                linear-gradient(135deg, rgba(200, 200, 200, 0.1) 25%, transparent 25%),
+                linear-gradient(225deg, rgba(200, 200, 200, 0.1) 25%, transparent 25%),
+                linear-gradient(315deg, rgba(200, 200, 200, 0.1) 25%, transparent 25%),
+                linear-gradient(45deg, rgba(200, 200, 200, 0.1) 25%, transparent 25%);
+            background-size: 20px 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        /* Header Styles */
+        header {
+            background-color: var(--white);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+        }
+        
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+        }
+        
+        .logo {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--primary-color);
+        }
+        
+        .logo span {
+            color: var(--secondary-color);
+        }
+        
+        nav ul {
+            display: flex;
+            list-style: none;
+        }
+        
+        nav ul li {
+            margin-left: 30px;
+            position: relative;
+        }
+        
+        nav ul li a {
+            text-decoration: none;
+            color: var(--text-color);
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+        
+        nav ul li a:hover {
+            color: var(--secondary-color);
+        }
+        
+        /* Main Content Styles */
+        main {
+            margin-top: 80px;
+            padding: 40px 0;
+        }
+        
+        section {
+            padding: 60px 0;
+            border-bottom: 1px solid #eee;
+        }
+        
+        section:last-child {
+            border-bottom: none;
+        }
+        
+        h2 {
+            font-size: 32px;
+            margin-bottom: 30px;
+            color: var(--primary-color);
+            text-align: center;
+        }
+        
+        h3 {
+            font-size: 24px;
+            margin: 30px 0 20px;
+            color: var(--secondary-color);
+        }
+        
+        p {
+            margin-bottom: 20px;
+        }
+        
+        /* About Section */
+        .about-content {
+            display: flex;
+            align-items: center;
+            gap: 40px;
+        }
+        
+        .about-text {
+            flex: 1;
+        }
+        
+        .about-image {
+            flex: 1;
+            text-align: center;
+        }
+        
+        .about-image img {
+            max-width: 100%;
+            border-radius: 8px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        /* Products Section */
+        .product-category {
+            margin-bottom: 50px;
+        }
+        
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 30px;
+        }
+        
+        .product-item {
+            background: var(--white);
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s;
+        }
+        
+        .product-item:hover {
+            transform: translateY(-5px);
+        }
+        
+        .product-image {
+            height: 200px;
+            overflow: hidden;
+        }
+        
+        .product-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s;
+        }
+        
+        .product-item:hover .product-image img {
+            transform: scale(1.05);
+        }
+        
+        .product-info {
+            padding: 20px;
+        }
+        
+        .product-info h4 {
+            font-size: 18px;
+            margin-bottom: 10px;
+        }
+        
+        /* Equipment Section */
+        .equipment-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 30px;
+        }
+        
+        .equipment-item {
+            background: var(--white);
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .equipment-image {
+            height: 250px;
+            overflow: hidden;
+        }
+        
+        .equipment-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .equipment-info {
+            padding: 20px;
+        }
+        
+        .equipment-info h3 {
+            margin-top: 0;
+        }
+        
+        .equipment-info ul {
+            margin-left: 20px;
+        }
+        
+        .equipment-info li {
+            margin-bottom: 8px;
+        }
+        
+        /* Gallery Section */
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+        
+        .gallery-item {
+            position: relative;
+            overflow: hidden;
+            border-radius: 8px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+            aspect-ratio: 1/1;
+        }
+        
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s;
+        }
+        
+        .gallery-item:hover img {
+            transform: scale(1.1);
+        }
+        
+        .view-more {
+            text-align: center;
+            margin-top: 40px;
+        }
+        
+        .view-more-btn {
+            display: inline-block;
+            padding: 12px 30px;
+            background-color: var(--secondary-color);
+            color: white;
+            text-decoration: none;
+            border-radius: 30px;
+            font-weight: 500;
+            transition: background-color 0.3s;
+        }
+        
+        .view-more-btn:hover {
+            background-color: #c0392b;
+        }
+        
+        /* Contact Section */
+        .contact-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+        }
+        
+        .contact-info {
+            background: var(--white);
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .contact-info h3 {
+            margin-top: 0;
+        }
+        
+        .contact-info p {
+            margin-bottom: 15px;
+        }
+        
+        .map-container {
+            height: 400px;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .map-container iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+        
+        /* Tooltip Styles */
+        [data-tooltip] {
+            position: relative;
+            cursor: help;
+            border-bottom: 1px dotted #666;
+        }
+        
+        [data-tooltip]:hover::after {
+            content: attr(data-tooltip);
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            bottom: 100%;
+            background: var(--primary-color);
+            color: white;
+            padding: 5px 10px;
+            border-radius: 4px;
+            font-size: 14px;
+            white-space: nowrap;
+            z-index: 100;
+            margin-bottom: 10px;
+        }
+        
+        /* Responsive Styles */
+        @media (max-width: 992px) {
+            .about-content {
+                flex-direction: column;
+            }
+            
+            .product-grid, .equipment-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .gallery-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .contact-container {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .header-container {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            nav ul {
+                margin-top: 20px;
+                justify-content: center;
+            }
+            
+            nav ul li {
+                margin: 0 10px;
+            }
+            
+            .gallery-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container header-container">
+            <div class="logo">Print<span>&Make</span></div>
+            <nav>
+                <ul>
+                    <li><a href="#about">회사소개</a></li>
+                    <li><a href="#products">제품안내</a></li>
+                    <li><a href="#equipment">장비소개</a></li>
+                    <li><a href="#gallery">갤러리</a></li>
+                    <li><a href="https://printhaza.com" target="_blank">SHOP</a></li>
+                    <li><a href="#contact">Contact Us</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+    
+    <main>
+        <section id="about">
+            <div class="container">
+                <h2>회사소개</h2>
+                <div class="about-content">
+                    <div class="about-text">
+                        <p><strong>프린트 앤 메이크 (P&M)</strong>는 디지털 프린팅 및 실내외 광고 분야에서 <span data-tooltip="디지털 프린팅: 컴퓨터 파일을 직접 인쇄하는 기술">20년 이상</span>의 경험을 자랑하는 전문 기업입니다. 비록 새롭게 시작한 회사지만, P&M의 구성원들은 축적된 전문지식과 노하우를 바탕으로 고객에게 최고의 크리에이티브 파워를 제공합니다.</p>
+                        <p>P&M은 다양한 고품질 출력물 및 제작물 생산을 위해 <span data-tooltip="HP Latex: HP사의 수성 잉크를 사용하는 산업용 프린터">HP Latex 700</span>, UV 하이브리드 프린터, 수성 프린터 등을 사용하여 고객의 요구에 최적화된 서비스를 제공합니다.</p>
+                        <p>고객의 성공을 가장 중요한 가치로 여기며, 항상 연구와 경험을 바탕으로 최상의 결과를 제공하는 파트너로 함께 성장하고자 합니다.</p>
+                    </div>
+                    <div class="about-image">
+                        <img src="b004.jpg">
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <section id="products">
+            <div class="container">
+                <h2>제품안내</h2>
+                
+                <div class="product-category">
+                    <h3>판소재</h3>
+                    <div class="product-grid">
+                        <div class="product-item">
+                            <div class="product-image">
+                                <img src="d01.jpg" alt="포맥스">
+                            </div>
+                            <div class="product-info">
+                                <h4>포맥스</h4>
+                                <p>가볍고 튼튼한 소재로, 다양한 디자인과 출력물에 적합합니다. <span data-tooltip="실내외 광고물: 건물 내부 또는 외부에 설치되는 광고 매체">실내외 광고물</span> 제작에 많이 사용됩니다.</p>
+                            </div>
+                        </div>
+                        
+                        <div class="product-item">
+                            <div class="product-image">
+                                <img src="d02.jpg"" alt="폼보드">
+                            </div>
+                            <div class="product-info">
+                                <h4>폼보드</h4>
+                                <p>뛰어난 가공성과 내구성을 자랑하는 소재로, 주로 전시회, 광고물 등에서 사용됩니다.</p>
+                            </div>
+                        </div>
+                        
+                        <div class="product-item">
+                            <div class="product-image">
+                                <img src="d03.png" alt="아크릴">
+                            </div>
+                            <div class="product-info">
+                                <h4>아크릴</h4>
+                                <p>투명하고 고급스러운 느낌을 주는 소재로, 간판, 상패 등 다양한 용도로 활용됩니다.</p>
+                            </div>
+                        </div>
+                        
+                        <div class="product-item">
+                            <div class="product-image">
+                                <img src="d04.png" alt="PC(폴리카보네이트)">
+                            </div>
+                            <div class="product-info">
+                                <h4>PC(폴리카보네이트)</h4>
+                                <p>내구성이 강하고 투명한 특성으로, 실내외 간판 및 보호판에 적합한 소재입니다.</p>
+                            </div>
+                        </div>
+
+              
+
+                    </div>
+                </div>
+                
+                <div class="product-category">
+                    <h3>롤소재</h3>
+                    <div class="product-grid">
+                        <div class="product-item">
+                            <div class="product-image">
+                                <img src="d05.jpg" alt="PVC켈">
+                            </div>
+                            <div class="product-info">
+                                <h4>PVC켈</h4>
+                                <p>내구성이 뛰어나고 물에 강한 특성을 지닌 소재로, 실내외 간판 및 광고물에 사용됩니다.</p>
+                            </div>
+                        </div>
+                        
+                        <div class="product-item">
+                            <div class="product-image">
+                                <img src="d06.png" alt="메쉬">
+                            </div>
+                            <div class="product-info">
+                                <h4>메쉬</h4>
+                                <p>구멍이 뚫려있는 PVC원단으로  바람의 저항을 적게 받아 공사장 가림막이나 바람이 많이 부는 외부에 설치되는 광고물등에 주로 많이 사용되어졌던 소재이나 요즘에 백화점 디스플레이물이나 배너용으로 많은 사랑을 받고 있는 제품입니다.</p>
+                            </div>
+                        </div>
+                        
+
+
+
+
+                        <div class="product-item">
+                            <div class="product-image">
+                                <img src="d07.jpg" alt="시트">
+                            </div>
+                            <div class="product-info">
+                                <h4>시트</h4>
+                                <p>다양한 인쇄물에 사용되는 실용적인 소재로, 광고 및 전시 등에 활용됩니다.</p>
+                            </div>
+                        </div>
+                        
+                        <div class="product-item">
+                            <div class="product-image">
+                                <img src="d08.jpg" alt="투명시트">
+                            </div>
+                            <div class="product-info">
+                                <h4>투명시트</h4>
+                                <p>투명하고 깔끔한 출력이 가능해 다양한 광고 및 인테리어 디자인에 사용됩니다.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <section id="equipment">
+            <div class="container">
+                <h2>장비소개</h2>
+
+                <div class="equipment-grid">
+                    <div class="equipment-item">
+                        <div class="equipment-image">
+                            <img src="c01.png" alt="XTRA 2000H">
+                        </div>
+                        <div class="equipment-info">
+                            <h3>XTRA 2000H</h3>
+                            <p>하이브리드 UV LED 프린터</p>
+                            <ul>
+                                <li>6pl~18pl의 배리어블 도트 구현이 가능한 그레이 스케일 헤드 채용</li>
+                                <li>백색 잉크 및 C+W+C 인쇄(3레이어) 가능</li>
+                                <li>최고 100㎡/h의 출력 속도</li>
+                                <li>출력 가능 폭 2m, 두께 5.1cm의 롤 또는 평판 소재에 출력 가능</li>
+                                <li>8개의 배큠 시스템으로 소재의 강력한 흡착 가능</li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <div class="equipment-item">
+                        <div class="equipment-image">
+                            <img src="c02.png" alt="HP 라텍스 700">
+                        </div>
+                        <div class="equipment-info">
+                            <h3>HP 라텍스 700</h3>
+                            <p>친환경 잉크 사용</p>
+                            <ul>
+                                <li>선명한 색상과 또렷한 4포인트 글자 출력</li>
+                                <li>실외에서 시간당 최대 334ft²의 속도로 채도가 높은 색상 제공</li>
+                                <li>HAP가 없으며, 무취 인쇄</li>
+                                <li>재활용 가능한 Eco-Carton 외장 카드보드 사용</li>
+                                <li>지속 가능한 발전을 위한 친환경 용지 사용</li>
+                            </ul>
+                        </div>
+                    </div>
+
+
+
+
+<div class="equipment-item">
+                        <div class="equipment-image">
+                            <img src="c03.png" alt="Mimaki JV300K-190">
+                        </div>
+                        <div class="equipment-info">
+                            <h3>Mimaki JV300K-19</h3>
+                            <p>환경 친화적인 수성 잉크 사용</p>
+                            <ul>
+                                <li>고해상도 출력의 높은 퀄리티</li>
+                                <li>출력 가능 폭 1940mm, 최대 출력 속도 130㎡/h</li>
+                                <li>다양한 매체에 인쇄할 수 있어 광고물 제작이나  배너 제작등 여러 분양에서 활용 가능.</li>
+
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <div class="equipment-item">
+                        <div class="equipment-image">
+                            <img src="c04.png" alt="Graphtec CE7000-130">
+                        </div>
+                        <div class="equipment-info">
+                            <h3>Graphtec CE7000-130</h3>
+                            <p>고성능 컷팅 플로터</p>
+                            <ul>
+                                <li>빠른 커팅 성능</li>
+                                <li>정밀한 커팅으로 최고의 결과물을 제공합니다</li>
+                                                            </ul>
+                        </div>
+                    </div>
+
+
+
+
+                </div>
+              </div>
+   
+        </section>
+        
+        <section id="gallery">
+            <div class="container">
+                <h2>갤러리</h2>
+                <div class="gallery-grid">
+                    <div class="gallery-item">
+                        <img src="a001.png" alt="프린트 작품 1">
+                    </div>
+                    <div class="gallery-item">
+                        <img src="a002.png" alt="프린트 작품 2">
+                    </div>
+                    <div class="gallery-item">
+                        <img src="a003.png" alt="프린트 작품 3">
+                    </div>
+                    <div class="gallery-item">
+                        <img src="a004.png" alt="프린트 작품 4">
+                    </div>
+                    <div class="gallery-item">
+                        <img src="a005.png" alt="프린트 작품 5">
+                    </div>
+                    <div class="gallery-item">
+                        <img src="a006.png" alt="프린트 작품 6">
+                    </div>
+                    <div class="gallery-item">
+                        <img src="a007.png" alt="프린트 작품 7">
+                    </div>
+                    <div class="gallery-item">
+                        <img src="a008.png" alt="프린트 작품 8">
+                    </div>
+                    <div class="gallery-item">
+                        <img src="a009.png" alt="프린트 작품 9">
+                    </div>
+                </div>
+                
+                <div class="view-more">
+                    <a href="https://printhaza.com/pages/best" class="view-more-btn" target="_blank">갤러리 더보기</a>
+                </div>
+            </div>
+        </section>
+        
+        <section id="contact">
+            <div class="container">
+                <h2>Contact Us</h2>
+                <div class="contact-container">
+                    <div class="contact-info">
+                        <h3>연락처 정보</h3>
+                        <p><strong>주소:</strong> 경기도 부천시 부광로 220 우성테크노파크1 (4F) 442호, 443호</p>
+                        <p><strong>연락처:</strong> 02-6397-1229</p>
+                        <p><strong>이메일:</strong> na3407@naver.com</p>
+                        <p><strong>웹하드 ID:</strong> printnmake</p>
+                        <p><strong>웹하드 비밀번호:</strong> pnm1228</p>
+                    </div>
+                    
+                    <div class="map-container">
+
+
+
+                        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3166.699670806772!2d126.820471889221!3d37.46781235776407!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x357b63e3e214835f%3A0x199e29f8acb0a471!2z7Jqw7ISx7YWM7YGs64W47YyM7YGsMQ!5e0!3m2!1sko!2skr!4v1750750035709!5m2!1sko!2skr" allowfullscreen="" loading="lazy"></iframe>
+
+
+
+
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+</body>
+</html>
+
+
